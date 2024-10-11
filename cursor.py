@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import shutil
 import urllib.request
 
 # ディレクトリを定義
@@ -73,12 +74,17 @@ try:
         print(f"シンボリックリンクが更新されました: {symlink_path}")
 
         # アイコンをダウンロード
+        source_icon_path = os.path.join(target_dir, "assets", "cursor-icon.svg")
+        
+        # 目标图标路径
         icon_path = os.path.expanduser("~/.local/share/icons/cursor-icon.svg")
-        if not os.path.exists(icon_path):
-            os.makedirs(os.path.dirname(icon_path), exist_ok=True)
-            icon_url = "https://www.cursor.so/brand/icon.svg"
-            urllib.request.urlretrieve(icon_url, icon_path)
-            print(f"アイコンをダウンロードしました: {icon_path}")
+        
+        # 确保目标目录存在
+        os.makedirs(os.path.dirname(icon_path), exist_ok=True)
+        
+        # 复制图标文件
+        shutil.copy2(source_icon_path, icon_path)
+        print(f"图标已复制到: {icon_path}")
 
         # .desktopファイルを作成または更新
         desktop_file_path = os.path.expanduser("~/.local/share/applications/cursor.desktop")
